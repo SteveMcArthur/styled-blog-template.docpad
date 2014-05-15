@@ -11,12 +11,19 @@
     height: auto;
     z-index: 2;
 }
+#main-content .columns {
+    margin-bottom: 20px;
+}
 .row {
     max-width: 80rem;
 }
 img {
     margin: 10px;
 }
+.ui.vertical.menu .item img{
+    margin: 0;   
+}
+
 img.float-left {
     margin-left: 0;
 }

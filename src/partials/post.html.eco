@@ -1,0 +1,22 @@
+<article>
+    <h1><a href="<%= @document.url %>"><%- @document.title %></a></h1>
+    <p class="article_pub-date">Published
+        <time datetime="<%= @document.date %>" pubdate=""><%- @document.date.toDateString() %></time>
+    </p>
+    
+    <%@content = @document.contentRenderedWithoutLayouts%>
+    <%# pass a 'truncate' helper function to shorten post length for display on home page%>
+    <%if @truncate && @content:%>
+        <%@content = @truncate(@content,@trimTo || 700)%>
+    <%end%>
+        
+    <div class="row">
+        <div class="large-12 columns">
+           <%- @content %>
+        </div>
+    </div>
+    <%if @truncate && @content:%>
+        <a href="<%= @document.url %>" class="button">Read More</a>
+    <%end%>
+</article>
+

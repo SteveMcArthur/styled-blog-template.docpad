@@ -36,21 +36,21 @@ docpadConfig = {
 
             # The website's styles
             styles: [
-                'css/foundation.css'
-                'css/header.css'
-                'css/icon-fonts.css'
-                'css/hover.css'
-                'css/footer-bottom.css'
-                'css/menu.css'
-                'css/blog.css'
-                'css/fonts.css'
-                'css/color.css'
+                '/css/foundation.css'
+                '/css/header.css'
+                '/css/icon-fonts.css'
+                '/css/hover.css'
+                '/css/footer-bottom.css'
+                '/css/menu.css'
+                '/css/blog.css'
+                '/css/fonts.css'
+                '/css/color.css'
             ]
 
             # The website's scripts
             scripts: [
-                'js/jquery.js'
-                'js/foundation.min.js'
+                '/js/jquery.js'
+                '/js/foundation.min.js'
                 """
                 <script>$(document).foundation();</script>
                 """
@@ -80,6 +80,49 @@ docpadConfig = {
         getPreparedKeywords: ->
             # Merge the document keywords with the site keywords
             @site.keywords.concat(@document.keywords or []).join(', ')
+            
+        # Get a list of all categories from all posts
+        getCategories: ->
+            cat = []
+            # iterate thru documents
+            @getCollection('posts').forEach (document) ->
+                docat = document.getMeta().get('category')
+                if !(docat in cat)
+                    cat.push(docat)
+            return cat
+        
+         # Get a list of all categories from all posts
+        getTags: ->
+            cat = []
+            # iterate thru documents
+            @getCollection('posts').forEach (document) ->
+                docat = document.getMeta().get('category')
+                if !(docat in cat)
+                    cat.push(docat)
+            return cat
+        
+        # Get the current year
+        thisYear: (new Date()).getFullYear()
+        
+        truncateText: (content,trimTo) ->
+            trimTo = trimTo || 200
+            output = content.substr(0,trimTo).trim()
+            #remove anchor tags as they don't show up on the page
+            nolinks = output.replace(/<a(\s[^>]*)?>.*?<\/a>/ig,"")
+            #check if there is a difference in length - if so add this
+            #difference to the trimTo length (add the text length that will not show
+            #up in the rendered HTML
+            diff = output.length - nolinks.length
+            output = content.substr(0,trimTo + diff)
+            #find the last space so that don't break the text
+            #in the middle of a word
+            i = output.lastIndexOf(' ',output.length-1)
+            output.substr(0,i)+"..."
+            
+        getRecentPosts: ->
+            posts = @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
+            return [posts.at(2).toJSON(),posts.at(3).toJSON()]
+
 
 
     # =================================
@@ -97,7 +140,9 @@ docpadConfig = {
         # Create a collection called posts
         # That contains all the documents that will be going to the out path posts
         posts: ->
-            @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'})
+            @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
+        popularPosts: ->
+            @getCollection('documents').findAllLive({relativeOutDirPath: 'posts',popular:$exists:true},[{date:-1}])
 
 
     # =================================

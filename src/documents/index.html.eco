@@ -2,43 +2,7 @@
 layout: 'default' 
 ---
 
-<!--This simply inserts the following html into the 'default' layout. Since no pre-processing is
-required other than to parse the metadata - a plain html file is all that is required and not
-a 'html.eco' or 'html.coffee' or 'html.jade'-->
-<article>
-    <h1><a href="#">Blog Post Title</a></h1>
-    <p class="article_pub-date">Published
-        <time datetime="2014-05-13" pubdate="">May 13, 2014</time>
-    </p>
-
-    <div class="row">
-        <div class="large-12 columns">
-            <img class="float-right" src="img/desktop2.png" />
-            <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa.</p>
-            <p>Boudin aliqua adipisicing rump corned beef. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon nulla pork belly cupidatat meatloaf cow. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon nulla pork belly cupidatat meatloaf cow. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-        </div>
-    </div>
-    <a href="#" class="button">Read More</a>
-</article>
-
-<hr />
-
-<article>
-
-    <h1><a href="#">Blog Post Title</a></h1>
-    <p class="article_pub-date">Published
-        <time datetime="2014-05-13" pubdate="">May 13, 2014</time>
-    </p>
-    <div class="row">
-        <div class="large-12 columns">
-            <img class="float-left" src="img/seo.png" />
-            <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa.</p>
-            <p>Boudin aliqua adipisicing rump corned beef. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon nulla pork belly cupidatat meatloaf cow. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon nulla pork belly cupidatat meatloaf cow. Nulla corned beef sunt ball tip, qui bresaola enim jowl. Capicola short ribs minim salami nulla nostrud pastrami.</p>
-        </div>
-    </div>
-    <a href="#" class="button">Read More</a>
-</article>
+<% posts = @getCollection('posts').toJSON().slice(0,2) %>
+<% for post in posts: %>
+    <%-@partial('post.html.eco',{document:post,truncate:@truncateText,trimTo:700})%>
+<%end%>

@@ -2,7 +2,10 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
 <head>
     <!-- Standard Meta -->
     <meta charset="utf-8" />
@@ -10,25 +13,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Site Properities -->
-    <title><%= @getPreparedTitle() %></title>
+    <title>
+        <%=@getPreparedTitle() %>
+    </title>
     <meta name="description" content="<%= @getPreparedDescription() %>" />
     <meta name="keywords" content="<%= @getPreparedKeywords() %>" />
 
     <!-- DocPad Meta -->
-    <%- @getBlock('meta').toHTML() %>
+    <%- @getBlock( 'meta').toHTML() %>
 
     <!-- DocPad Styles + Our Own -->
-    <%- @getBlock('styles').add(@site.styles).add(@document.styles).toHTML() %>
-    <script src="js/modernizr.js"></script>
+    <%- @getBlock( 'styles').add(@site.styles).add(@document.styles).toHTML() %>
+    <script src="/js/modernizr.js"></script>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 </head>
+
 <body>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    
-      <div class="fixed">
+
+    <div class="fixed">
         <!-- Header and Nav -->
         <nav class="top-bar" data-topbar>
             <ul class="title-area">
@@ -109,9 +115,7 @@
                             <i class="icon-feed"></i>
                         </a>
                     </li>
-
                 </ul>
-
 
             </section>
         </nav>
@@ -132,39 +136,39 @@
 
                     <h5>Categories</h5>
                     <div class="ui secondary vertical pointing menu">
-                        <a href="#" class="active item">News</a>
-                        <a href="#" class="item">Code</a>
-                        <a href="#" class="item">Design</a>
-                        <a href="#" class="item">Fun</a>
-                        <a href="#" class="item">Weasels</a>
+                        <% cats=@getCategories() %>
+                        <% for item in cats: %>
+                            <a href="#" class="item"><%-item%></a>
+                        <%end%>
+
                     </div>
 
-                    <div class="ui vertical menu">
-                        <div class="header item">
-                            <i class="icon-page"></i>
-                            Recent Posts
+
+                        <div class="ui vertical menu">
+                            <div class="header item">
+                                <i class="icon-page"></i>
+                                Recent Posts
+                            </div>
+                            <% for post in @getRecentPosts():%>
+                                <div class="item">
+                                    <% content = post.content.replace(/<img[^>]+\>/ig,"")%>
+                                    <a href="<%=post.url%>"><h6><%-post.title%></h6> <p><%-@truncateText(content,100)%></p></a>
+                                </div>
+                            <%end%>
                         </div>
 
-                        <div class="item">
-                            <a href="#"><h6>Pork Sausage News!</h6> <p>Pork sausages health benefits proved by government...</p></a>
+                        <div class="ui vertical menu">
+                            <div class="header item">
+                                <i class="icon-page"></i>
+                                Popular Posts
+                            </div>
+                            <% for post in @getCollection('popularPosts').toJSON():%>
+                                <div class="item">
+                                    <% content = post.content.replace(/<img[^>]+\>/ig,"")%>
+                                    <a href="<%=post.url%>"><h6><%-post.title%></h6><p><%-@truncateText(content,100)%></p></a>
+                                </div>
+                            <%end%>
                         </div>
-                        <div class="item">
-                            <a href="#"><h6>More Amazing Pork Sausage News!</h6> <p>Pork sausages better than viagra...</p></a>
-                        </div>
-                    </div>
-
-                    <div class="ui vertical menu">
-                        <div class="header item">
-                            <i class="icon-page"></i>
-                            Popular Posts
-                        </div>
-                        <div class="item">
-                            <a href="#"><h6>Pork Sausage News!</h6> <p>Pork sausages health benefits proved by government...</p></a>
-                        </div>
-                        <div class="item">
-                            <a href="#"><h6>More Amazing Pork Sausage News!</h6> <p>Pork sausages better than viagra...</p></a>
-                        </div>
-                    </div>            
                 </aside>
                 <!-- End Sidebar -->
             </div>
@@ -190,7 +194,9 @@
                 <div class="medium-8 medium-8 pull-4 columns">
                     <ul class="site-links">
                         <li class="name">
-                            <a href="./">Website Name</a>
+                            <a href="./">
+                                <%-@site.title %>
+                            </a>
                         </li>
                         <li>
                             <a href="./">Home</a>
@@ -202,7 +208,9 @@
                             <a href="./">News & Events</a>
                         </li>
                     </ul>
-                    <p class="copyright">© 2014 Website. All rights reserved.</p>
+                    <p class="copyright">©
+                        <%-@thisYear%>
+                            <%-@site.title %>. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -210,7 +218,8 @@
 
 
     <!-- DocPad Scripts + Our Own -->
-    <%- @getBlock('scripts').add(@site.scripts,{defer:false}).add(@document.scripts,{defer:false}).toHTML() %>
+    <%- @getBlock( 'scripts').add(@site.scripts,{defer:false}).add(@document.scripts,{defer:false}).toHTML() %>
 
 </body>
+
 </html>

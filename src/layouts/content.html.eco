@@ -1,8 +1,5 @@
 ---
 layout: default
 ---
+<%- @partial('post.html.eco',{document:@document}) %>
 
-<h2><a href="<%= @document.url %>"><%- @document.title or @document.name %></a></h2>
-<div>
-	<%- @content %>
-</div>
