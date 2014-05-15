@@ -1,4 +1,4 @@
-<article>
+<article data-category="<%=@document.category%>">
     <h1><a href="<%= @document.url %>"><%- @document.title %></a></h1>
     <p class="article_pub-date">Published
         <time datetime="<%= @document.date %>" pubdate=""><%- @document.date.toDateString() %></time>

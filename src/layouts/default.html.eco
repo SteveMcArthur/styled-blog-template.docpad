@@ -135,7 +135,7 @@
                 <aside class="large-3 columns">
 
                     <h5>Categories</h5>
-                    <div class="ui secondary vertical pointing menu">
+                    <div id="categories" class="ui secondary vertical pointing menu">
                         <% cats=@getCategories() %>
                         <% for item in cats: %>
                             <a href="#" class="item"><%-item%></a>
@@ -219,6 +219,30 @@
 
     <!-- DocPad Scripts + Our Own -->
     <%- @getBlock( 'scripts').add(@site.scripts,{defer:false}).add(@document.scripts,{defer:false}).toHTML() %>
+    <script>
+       $(function () {
+           var items = [];
+           var i = 0;
+
+           function containsTxt(txt) {
+               for (i = 0;i < items.length; i++) {
+                   if (items[i] == txt) {
+                       return true;
+                   }
+               }
+               return false;
+           }
+           $('[data-category]').each(function () {
+               items.push($(this).attr('data-category'));
+           });
+           $('#categories .item').each(function () {
+               if (containsTxt($(this).text())) {
+                   $(this).addClass('active');
+               }
+           });
+
+       });
+    </script>
 
 </body>
 
