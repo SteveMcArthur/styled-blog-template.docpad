@@ -188,6 +188,7 @@ docpadConfig = {
             # Extract the server from the options
             {server} = opts
             docpad = @docpad
+            database = docpad.getDatabase()
 
             # As we are now running in an event,
             # ensure we are using the latest copy of the docpad configuraiton
@@ -210,8 +211,8 @@ docpadConfig = {
                 nowTime = now.getTime()
                 nowString = now.toString()
                 redirect = req.body.redirect ? req.query.redirect ? 'back'
-                ###
-                outfile = latestConfig.documentsPaths[0]+"/comments/#{nowTime}.html.md"
+                
+                outfile = latestConfig.documentsPaths[0]+"\comments\#{nowTime}.html.md"
                 console.log(outfile)
                 # Prepare
                 documentAttributes =
@@ -220,6 +221,7 @@ docpadConfig = {
                         postslug: req.body.slug
                         author: req.body.author or ''
                         date: now
+                        fullPath: outfile
                         modelType: 'document'
 
                 # Create document from attributes
@@ -250,7 +252,7 @@ docpadConfig = {
                 document.writeSource {cleanAttributes:true,path:outfile}, (err) ->
                     # Check
                     return next(err)  if err
-                ###
+                
 }
 
 # Export our DocPad Configuration

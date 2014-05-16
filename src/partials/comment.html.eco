@@ -34,19 +34,12 @@
                         </div>
                     <%end%>
                 <%end%>
-                <script>
-                    function submitForm(){
-                            $('.ui.reply.form').trigger('submit');
-                    }               
-                </script>
+      
                 <form action="/comments" method="POST" class="ui reply form" onclick="submitForm();">
                     <div class="field">
                         <textarea></textarea>
                     </div>
-                
-                    <div   class="ui fluid teal labeled submit icon button">
-                        <i class="icon edit"></i> Add Reply
-                    </div>
+                    <input type="submit" value="Add Reply" class="ui fluid teal labeled submit icon button">               
                 </form>
          
             </div>
