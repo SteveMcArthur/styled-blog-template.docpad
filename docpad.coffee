@@ -13,11 +13,11 @@ docpadConfig = {
         site:
             # The production url of our website
             # If not set, will default to the calculated site URL (e.g. http://localhost:9778)
-            url: "http://website.com"
+            url: "http://docpad.org"
 
             # Here are some old site urls that you would like to redirect from
             oldUrls: [
-                'www.website.com',
+                'www.docpad.org',
                 'website.herokuapp.com'
             ]
 
@@ -41,7 +41,12 @@ docpadConfig = {
                 '/css/icon-fonts.css'
                 '/css/hover.css'
                 '/css/footer-bottom.css'
+                '/css/basic-icon.css'
+                '/css/icon.css'
+                '/css/button.css'
+                '/css/segment.css'
                 '/css/menu.css'
+                '/css/comment.css'
                 '/css/blog.css'
                 '/css/fonts.css'
                 '/css/color.css'
@@ -104,6 +109,7 @@ docpadConfig = {
         # Get the current year
         thisYear: (new Date()).getFullYear()
         
+        # Used for shortening a post
         truncateText: (content,trimTo) ->
             trimTo = trimTo || 200
             output = content.substr(0,trimTo).trim()
@@ -122,6 +128,10 @@ docpadConfig = {
         getRecentPosts: ->
             posts = @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
             return [posts.at(2).toJSON(),posts.at(3).toJSON()]
+        
+        getComments: (slug) ->
+            @getCollection('comments').findAll({'postslug': slug},[{date:-1}])
+            
 
 
 
@@ -143,6 +153,8 @@ docpadConfig = {
             @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
         popularPosts: ->
             @getCollection('documents').findAllLive({relativeOutDirPath: 'posts',popular:$exists:true},[{date:-1}])
+        comments: ->
+            @getCollection('documents').findAllLive({relativeOutDirPath: 'comments'},[{date:-1}])
 
 
     # =================================
@@ -190,6 +202,55 @@ docpadConfig = {
                     res.redirect(newUrl+req.url, 301)
                 else
                     next()
+                    
+            # Comment Handing
+            server.post '/comments', (req,res,next) ->
+                # Prepare
+                now = new Date(req.body.date or null)
+                nowTime = now.getTime()
+                nowString = now.toString()
+                redirect = req.body.redirect ? req.query.redirect ? 'back'
+                ###
+                outfile = latestConfig.documentsPaths[0]+"/comments/#{nowTime}.html.md"
+                console.log(outfile)
+                # Prepare
+                documentAttributes =
+                    data: req.body.body or ''
+                    meta:
+                        postslug: req.body.slug
+                        author: req.body.author or ''
+                        date: now
+                        modelType: 'document'
+
+                # Create document from attributes
+                document = docpad.createDocument(documentAttributes)
+
+                # Inject helper
+                latestConfig.injectDocumentHelper?.call(me, document)
+
+                # Add it to the database
+                database.add(document)
+
+                # Listen for regeneration
+                docpad.once 'generateAfter', ->
+                    # Check
+                    # return next(err)  if err
+
+                    # Update browser
+                    if redirect is 'back'
+                        res.redirect('back')
+                    else if redirect is 'document'
+                        res.redirect(document.get('url'))
+                    else
+                        res.json(documentAttributes)
+
+                    # No need to call next here as res.send/redirect will do it for us
+
+                # Write source which will trigger the regeneration
+                document.writeSource {cleanAttributes:true,path:outfile}, (err) ->
+                    # Check
+                    return next(err)  if err
+                ###
 }
 
 # Export our DocPad Configuration

@@ -2,6 +2,7 @@
     <h1><a href="<%= @document.url %>"><%- @document.title %></a></h1>
     <p class="article_pub-date">Published
         <time datetime="<%= @document.date %>" pubdate=""><%- @document.date.toDateString() %></time>
+        <span class="float-right"><%- @document.slug %></span>
     </p>
     
     <%@content = @document.contentRenderedWithoutLayouts%>
@@ -17,6 +18,9 @@
     </div>
     <%if @truncate && @content:%>
         <a href="<%= @document.url %>" class="button">Read More</a>
+    <%else:%>    
+        <%comments = @getComments(@document.slug)%>   
+        <%= @partial('comment.html.eco',{comments:comments}) %>
     <%end%>
 </article>
 

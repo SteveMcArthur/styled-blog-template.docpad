@@ -4,5 +4,6 @@ layout: 'default'
 
 <% posts = @getCollection('posts').toJSON().slice(0,2) %>
 <% for post in posts: %>
-    <%-@partial('post.html.eco',{document:post,truncate:@truncateText,trimTo:700})%>
+    <%console.log("Document.slug: "+post.slug)%>   
+    <%-@partial('post.html.eco',{document:post,truncate:@truncateText,trimTo:700,getComments:@getComments})%>
 <%end%>
