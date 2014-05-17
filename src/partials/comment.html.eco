@@ -63,14 +63,62 @@
                         </div>
                 </div>
                 <script>
+                    var deferCount = 0;
+                    function defer(method) {
+                        if (window.$)
+                            method();
+                        else if (deferCount < 50){
+                            deferCount ++;
+                            setTimeout(function() { defer(method) }, 50);
+                        }
+                    }
+                    function assignReplyForm(){
+                        $('.field .placeholder').click(function(e){
+                            var txtarea =  $(this).siblings('textarea');
+                            $(this).hide();
+                            txtarea.focus();
+                            txtarea[0].selectionStart = 0;
+                            txtarea[0].selectionEnd = 0;
+            
+                        });
+                         $('textarea').click(function(){
+                            $(this).siblings('.placeholder').hide();
+                        });
+                         $('textarea').blur(function(){
+                           if($(this).text().length == 0){
+                              $('textarea').siblings('.placeholder').show();
+                           }
+                        });
+                        $('.actions .reply').click(function(){
+                            var offset = $(this).offset();
+                            var parent = $(this).parent();
+                            var left = offset.left-50;
+                            var top = offset.top+50;
+                            var form = $('#second-form');
+                            parent.append(form);
+                            form.fadeIn();
+                            
+                        });
+                        
+                    }
+                    
+                    defer(assignReplyForm);
+                    
                     var ablog = ablog || {};
-                    ablog.formSubmit = function() {
-                        var form = $('form.reply.form');
+                    
+                    ablog.formSubmit = function(formId) {
+                        var form = $('#'+formId);
+                        var timeEl = form.parent('.actions').siblings('.meta').children('.timeid');
+                        var responseId = null;
+                        if(timeEl.length > 0){
+                            responseId = timeEl.text();
+                        }
                         var url = form.attr('action');
                         msg = {
-                            "author": form.find('#author').val(),
+                            "author": form.find('.author').val(),
                             "slug": $('#doc-slug').text(),
-                            "content": form.find('#content').val()
+                            "content": form.find('.content').val(),
+                            "responseId": responseId
                         };
                         $.ajax({
                             type: "POST",
@@ -90,15 +138,41 @@
                     }
                 </script>
       
-                <form action="/comments" method="POST" class="ui reply form">
-                    <input id="author" name="author" type="text" value="anon">
+                <form id='main-form' action="/comments" method="POST" class="ui reply form">
+                   
                     <div class="field">
-                        <textarea id="content" name="content"></textarea>
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
                     </div>
-                    <input id="slug" name="slug" type="hidden" value="<%=@document.slug%>">
-                         <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit();">
-                            <i class="icon edit"></i> Add Reply
+                    <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input name="author" type="text" value="" placeholder="Name"   class="author">
                         </div>
+                        <div style="width:38%;float:right">
+                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                                <i class="icon edit"></i>Add Comment
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <form id='second-form' action="/comments" method="POST" class="ui reply form" style="display:none;">
+                    <div class="field">
+                        <span class="placeholder">Join the discussion...</span>
+                        <textarea name="content" class="content"></textarea>
+                    </div>
+                    <input name="slug" type="hidden" value="<%=@document.slug%>"  class="slug">
+                    <div style="height:40px;">
+                        <div style="width:58%;float:left;">   
+                            <input  name="author" type="text" value="" placeholder="Name" class="author">
+                        </div>
+                        <div style="width:38%;float:right">
+                            <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit('main-form');">
+                                <i class="icon edit"></i>Reply
+                            </div>
+                        </div>
+                    </div>
                 </form>
          
             </div>

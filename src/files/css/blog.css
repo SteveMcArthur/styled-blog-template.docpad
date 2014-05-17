@@ -20,10 +20,9 @@
 img {
     margin: 10px;
 }
-.ui.vertical.menu .item img{
-    margin: 0;   
+.ui.vertical.menu .item img {
+    margin: 0;
 }
-
 img.float-left {
     margin-left: 0;
 }
@@ -68,10 +67,47 @@ img.float-left {
     float: right;
     margin-top: -9px;
 }
-.comments{
+.comments {
     padding-left: 30px;
-    padding-right: 50px;   
+    padding-right: 50px;
 }
 .hidden {
     display: none !important;
+}
+.ui.comments .reply.form textarea {
+    height: 5em;
+}
+input[text],input {
+    height: 43px !important;
+    border-radius: 0.40em;
+    border-color: #E0DBDB;
+    border-width: 2px;
+}
+textarea {
+    border-radius: 0.40em;
+    border-color: #E0DBDB;
+    border-width: 2px;
+}
+input[text]:focus {
+     border-color: #E0DBDB;
+}
+textarea:focus {
+     border-color: #E0DBDB;
+}
+.field{
+    position: relative;
+}
+.field .placeholder {
+    color: #a5b2b9;
+    color: rgba(0, 39, 59, .35);
+    line-height: 30px;
+    font-size: 18px;
+    position: absolute;
+    top: 7px;
+    left: 10px;
+    right: 9px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: text;
 }

@@ -1,0 +1,33 @@
+{
+    "name": "docpad-plugin-absolute-paths",
+    "version": "2.0.0",
+    "description": "",
+    "homepage": "",
+    "keywords": [
+        "docpad",
+        "docpad-plugin",
+        "paths",
+        "absolute paths"
+    ],
+    "author": "Copyright holders name <copyright holder's email> (copyright holder's website URL)",
+    "maintainers": [
+        "Your name <your email> (your GitHub URL)"
+    ],
+    "contributors": [
+        "Your name <your email> (your GitHub URL)"
+    ],
+    "bugs": {
+        "url": "https://github.com/yourgithubusername/docpad-plugin-yourpluginname/issues"
+    },
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/yourgithubusername/docpad-plugin-yourpluginname.git"
+    },
+    "engines" : {
+        "node": ">=0.8"
+    },
+    "peerDependencies": {
+        "docpad": "6"
+    },
+    "main": "./src/absolute-paths.plugin.coffee"
+}
