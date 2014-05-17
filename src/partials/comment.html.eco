@@ -4,7 +4,7 @@
             <h2 class="ui header">
         <i class="icon inverted circular teal comment"></i> Comments
       </h2>
-            <div class="ui comments">
+            <div id="comments" class="ui comments">
                 <% if @comments.length == 0: %>
                     <p>No comments yet</p>
                 <% else: %>
@@ -21,6 +21,8 @@
                                 <a class="author"><%-comment.author%></a>
                                 <div class="metadata">
                                     <span class="date"><%-comment.date.toDateString()%></span>
+                                    <span class="float-right hidden slug"><%-comment.slug%></span>
+                                    <span class="float-right hidden timeid"><%-comment.timeid%></span>
                                 </div>
                                 <div class="text">
                                     <%-comment.contentRenderedWithoutLayouts%>
@@ -28,12 +30,62 @@
                                 <div class="actions">
                                     <a class="reply">Reply</a>
                                     <a class="delete">Delete</a>
-                                    <span class="float-right hidden"><%-comment.slug%></span>
+                                    
                                 </div>
                             </div>
                         </div>
                     <%end%>
                 <%end%>
+                <div id="comment-template" style="display:none;">
+                            <div class="comment">
+                            <a class="avatar">
+                                    <img src="/img/avatar/default-avatar.png">
+                            </a>
+                            <div class="content">
+                                <a class="author"></a>
+                                <div class="metadata">
+                                    <span class="date"></span>
+                                    <span  class="float-right hidden slug"></span>
+                                    <span class="float-right hidden timeid"></span>
+                                </div>
+                                <div class="text">
+                                    
+                                </div>
+                                <div class="actions">
+                                    <a class="reply">Reply</a>
+                                    <a class="delete">Delete</a>
+                                    
+                                    <span class="float-right hidden">Inserted</span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <script>
+                    var ablog = ablog || {};
+                    ablog.formSubmit = function() {
+                        var form = $('form.reply.form');
+                        var url = form.attr('action');
+                        msg = {
+                            "author": form.find('#author').val(),
+                            "slug": $('#doc-slug').text(),
+                            "content": form.find('#content').val()
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: msg,
+                            success: function(data,status){
+                                var template = $('#comment-template').children().clone();
+                                template.find('.author').html(data.meta.author);
+                                template.find('.date').html(new Date(data.meta.date).toDateString());
+                                template.find('.text').html(data.data);
+                                template.find('.slug').html(data.meta.postslug);
+                                template.find('.timeid').html(data.meta.timeid);
+                                $('#comments').prepend(template);
+                            }
+                        });
+                    }
+                </script>
       
                 <form action="/comments" method="POST" class="ui reply form">
                     <input id="author" name="author" type="text" value="anon">
@@ -41,7 +93,9 @@
                         <textarea id="content" name="content"></textarea>
                     </div>
                     <input id="slug" name="slug" type="hidden" value="<%=@document.slug%>">
-                    <input type="submit" value="Add Reply" class="ui fluid teal labeled submit icon button">               
+                         <div class="ui fluid blue labeled icon button" onclick="ablog.formSubmit();">
+                            <i class="icon edit"></i> Add Reply
+                        </div>
                 </form>
          
             </div>

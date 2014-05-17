@@ -166,6 +166,7 @@ docpadConfig = {
     # The following overrides our production url in our development environment with false
     # This allows DocPad's to use it's own calculated site URL instead, due to the falsey value
     # This allows <%- @site.url %> in our template data to work correctly, regardless what environment we are in
+    env: 'production'
 
     environments:
         development:
@@ -209,6 +210,8 @@ docpadConfig = {
             # Comment Handing
             server.post '/comments', (req,res,next) ->
                 # Prepare
+                console.log("POST COMMENTS")
+                console.log(req.body.slug)
                 now = new Date()
                 nowTime = now.getTime()
                 console.log(nowTime)
@@ -225,21 +228,8 @@ docpadConfig = {
                         postslug:req.body.slug
                         author: req.body.author or ''
                         date: nowString
+                        timeid: nowTime
                         fullPath: outFile
-
-                # Create document from attributes
-                #document = docpad.createDocument(documentAttributes)
-
-                # Inject helper
-                #latestConfig.injectDocumentHelper?.call(me, document)
-
-                # Add it to the database
-                #database.add(document)
-                
-                # Listen for regeneration
-                docpad.once 'generateAfter', ->
-                    # Check
-                    # return next(err)  if err
 
                 # No need to call next here as res.send/redirect will do it for us
 
@@ -251,21 +241,7 @@ docpadConfig = {
                 safefs.writeFile outFile, content, (err2) ->
                     return next(err2)  if err2
                     
-                
-                    # Update browser
-                if redirect is 'back'
-                    res.redirect('back')
-                else if redirect is 'document'
-                    res.redirect(document.get('url'))
-                else
-                    res.json(documentAttributes)
-                ###
-                safefs.ensurePath outPath, {}, (err)->
-                    return next(err)  if err
-                    consolelog "writing file..."
-                    safefs.writeFile outFile, content, (err2) ->
-                        return next(err2)  if err2
-                ###
+                res.json(documentAttributes)
 
 }
 

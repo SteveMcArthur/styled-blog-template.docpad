@@ -72,3 +72,6 @@ img.float-left {
     padding-left: 30px;
     padding-right: 50px;   
 }
+.hidden {
+    display: none !important;
+}
