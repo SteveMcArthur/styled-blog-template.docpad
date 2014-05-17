@@ -20,7 +20,7 @@
         <a href="<%= @document.url %>" class="button">Read More</a>
     <%else:%>    
         <%comments = @getComments(@document.slug)%>   
-        <%= @partial('comment.html.eco',{comments:comments}) %>
+        <%= @partial('comment.html.eco',{comments:comments,document:@document}) %>
     <%end%>
 </article>
 

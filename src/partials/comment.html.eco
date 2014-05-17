@@ -9,7 +9,7 @@
                     <p>No comments yet</p>
                 <% else: %>
                     <% for comment in @comments.toJSON():%>
-                        <div class="comment">        
+                        <div class="comment">
                             <a class="avatar">
                                 <%if comment.avatar:%>
                                     <img src="<%=@comment.avatar%>">
@@ -28,17 +28,19 @@
                                 <div class="actions">
                                     <a class="reply">Reply</a>
                                     <a class="delete">Delete</a>
-                                    <span class="float-right"><%-comment.slug%></span>
+                                    <span class="float-right hidden"><%-comment.slug%></span>
                                 </div>
                             </div>
                         </div>
                     <%end%>
                 <%end%>
       
-                <form action="/comments" method="POST" class="ui reply form" onclick="submitForm();">
+                <form action="/comments" method="POST" class="ui reply form">
+                    <input id="author" name="author" type="text" value="anon">
                     <div class="field">
-                        <textarea></textarea>
+                        <textarea id="content" name="content"></textarea>
                     </div>
+                    <input id="slug" name="slug" type="hidden" value="<%=@document.slug%>">
                     <input type="submit" value="Add Reply" class="ui fluid teal labeled submit icon button">               
                 </form>
          

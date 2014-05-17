@@ -189,6 +189,8 @@ docpadConfig = {
             {server} = opts
             docpad = @docpad
             database = docpad.getDatabase()
+            path = require('path')
+            safefs = require('safefs')
 
             # As we are now running in an event,
             # ensure we are using the latest copy of the docpad configuraiton
@@ -207,52 +209,64 @@ docpadConfig = {
             # Comment Handing
             server.post '/comments', (req,res,next) ->
                 # Prepare
-                now = new Date(req.body.date or null)
+                now = new Date()
                 nowTime = now.getTime()
+                console.log(nowTime)
                 nowString = now.toString()
                 redirect = req.body.redirect ? req.query.redirect ? 'back'
                 
-                outfile = latestConfig.documentsPaths[0]+"\comments\#{nowTime}.html.md"
-                console.log(outfile)
+                outPath = path.join(latestConfig.documentsPaths[0],"comments")
+                outFile = path.join(outPath,nowTime.toString()+".html.md")
+               
                 # Prepare
                 documentAttributes =
-                    data: req.body.body or ''
+                    data: req.body.content or ''
                     meta:
-                        postslug: req.body.slug
+                        postslug:req.body.slug
                         author: req.body.author or ''
-                        date: now
-                        fullPath: outfile
-                        modelType: 'document'
+                        date: nowString
+                        fullPath: outFile
 
                 # Create document from attributes
-                document = docpad.createDocument(documentAttributes)
+                #document = docpad.createDocument(documentAttributes)
 
                 # Inject helper
-                latestConfig.injectDocumentHelper?.call(me, document)
+                #latestConfig.injectDocumentHelper?.call(me, document)
 
                 # Add it to the database
-                database.add(document)
-
+                #database.add(document)
+                
                 # Listen for regeneration
                 docpad.once 'generateAfter', ->
                     # Check
                     # return next(err)  if err
 
-                    # Update browser
-                    if redirect is 'back'
-                        res.redirect('back')
-                    else if redirect is 'document'
-                        res.redirect(document.get('url'))
-                    else
-                        res.json(documentAttributes)
-
-                    # No need to call next here as res.send/redirect will do it for us
+                # No need to call next here as res.send/redirect will do it for us
 
                 # Write source which will trigger the regeneration
-                document.writeSource {cleanAttributes:true,path:outfile}, (err) ->
-                    # Check
-                    return next(err)  if err
+                meta = JSON.stringify(documentAttributes.meta, null, 0)
+                meta = meta.replace('{','').replace('}','').replace(/,/gi,',\r\n').replace(/:/gi,': ')
+                content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.data
+                console.log "writing file..."
+                safefs.writeFile outFile, content, (err2) ->
+                    return next(err2)  if err2
+                    
                 
+                    # Update browser
+                if redirect is 'back'
+                    res.redirect('back')
+                else if redirect is 'document'
+                    res.redirect(document.get('url'))
+                else
+                    res.json(documentAttributes)
+                ###
+                safefs.ensurePath outPath, {}, (err)->
+                    return next(err)  if err
+                    consolelog "writing file..."
+                    safefs.writeFile outFile, content, (err2) ->
+                        return next(err2)  if err2
+                ###
+
 }
 
 # Export our DocPad Configuration
