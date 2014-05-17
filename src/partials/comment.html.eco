@@ -6,7 +6,9 @@
       </h2>
             <div id="comments" class="ui comments">
                 <% if @comments.length == 0: %>
+                <div id="no-comments"> 
                     <p>No comments yet</p>
+                </div>  
                 <% else: %>
                     <% for comment in @comments.toJSON():%>
                         <div class="comment">
@@ -75,6 +77,7 @@
                             url: url,
                             data: msg,
                             success: function(data,status){
+                                $('#no-comments').remove();
                                 var template = $('#comment-template').children().clone();
                                 template.find('.author').html(data.meta.author);
                                 template.find('.date').html(new Date(data.meta.date).toDateString());
