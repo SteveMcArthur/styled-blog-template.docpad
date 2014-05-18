@@ -1,4 +1,4 @@
-<%comments = [] # @getComments().toJSON()%>
+<%comments = @getComments()%>
 <%imgPath = "./"%>
 <div class="ui two column grid comments">
     <div class="column">
