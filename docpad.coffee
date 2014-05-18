@@ -132,6 +132,9 @@ docpadConfig = {
         getComments: (slug) ->
             @getCollection('comments').findAll({'postslug': slug},[{date:-1}])
             
+        getByCateogory: (category) ->
+            @getCollection('posts').findAll({'category':category},[{date:-1}])
+            
 
 
 
@@ -155,6 +158,10 @@ docpadConfig = {
             @getCollection('documents').findAllLive({relativeOutDirPath: 'posts',popular:$exists:true},[{date:-1}])
         comments: ->
             @getCollection('documents').findAllLive({relativeOutDirPath: 'comments'},[{date:-1}])
+        pdfs: ->
+            @getCollection('files').findAllLive({relativeOutDirPath: 'pdfs'},[{date:-1}])
+        
+        
 
 
     # =================================
@@ -207,6 +214,9 @@ docpadConfig = {
                 else
                     next()
                     
+            server.get '/category/', (req,res,next) ->
+                    
+                next()
             # Comment Handing
             server.post '/comments', (req,res,next) ->
                 # Prepare

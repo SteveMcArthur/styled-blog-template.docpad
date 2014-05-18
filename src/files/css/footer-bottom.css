@@ -10,7 +10,7 @@
 .page-footer-bottom a.site-logo {
   color: #858585;
   font-weight: normal;
-  background: url("/img/footer-icons.png") no-repeat 0 3px;
+  background: url("../img/footer-icons.png") no-repeat 0 3px;
   padding: 23px 0 0 0;
   font-size: 1rem;
   display: inline-block;
@@ -76,7 +76,7 @@
   display: block;
   height: 50px;
   width: 50px;
-  background: url("/img/social.png") no-repeat center 0; }
+  background: url("../img/social.png") no-repeat center 0; }
 
 .page-footer-bottom ul.home-social li a:hover {
   opacity: 0.8;
@@ -111,16 +111,16 @@
 /* Retina Images */
 @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
   .page-footer-bottom ul.home-social li a {
-    background-image: url("/img/social-retina.png");
+    background-image: url("../img/social-retina.png");
     background-size: 50px 600px; }
   .page-footer-bottom a.site-logo {
-    background-image: url("/img/footer-icons-retina.png");
+    background-image: url("../img/footer-icons-retina.png");
     background-size: 100px 1400px; } }
 
 @media only screen and (max-width: 320px), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
   .page-footer-bottom ul.home-social li a {
-    background-image: url("/img/social-retina.png");
+    background-image: url("../img/social-retina.png");
     background-size: 50px 600px; }
   .page-footer-bottom a.site-logo {
-    background-image: url("/img/footer-icons-retina.png");
+    background-image: url("../img/footer-icons-retina.png");
     background-size: 100px 1400px; } }

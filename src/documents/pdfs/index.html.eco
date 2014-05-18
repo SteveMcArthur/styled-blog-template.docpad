@@ -1,0 +1,10 @@
+--- 
+layout: 'default' 
+---
+<ul>
+<%pdfcollection = @getCollection('pdfs').toJSON()%>
+<%for pdf in pdfcollection:%>
+    <li><%-pdf.url%></li>
+<%end%>
+
+</ul>

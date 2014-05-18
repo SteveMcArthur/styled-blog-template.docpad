@@ -1,0 +1,73 @@
+---
+layout: content
+title: Ajax basics
+tags: [ajax,javascript,js]
+date: '2010-05-30'
+category: javascript
+---
+When we talk about Ajax we are usually talking about updating a web page without reloading the entire page. It also, in reality, includes a series of techniques around ways to modify the content of a web page, usually at the behest of the page user. However, most of the time we are talking about the browser making requests to a website for more data and processing this update in the browser. There are actually a number of ways to do this, but the method we generally mean when using the "Ajax" term is XMLHttpRequest. In short, this is an object within the browser that allows Javascript to make calls/requests to websites - HTTP requests in other words. In normal circumstances these requests would be for whole HTML web pages, but it doesn't have to be. In the Ajax/Javascript environment we generally don't want a whole page. And since the server is aware that someone is going to request data other than HTML pages, it has kindly provided "data only" pages specifically for that purpose. This is what the XMLHttpRequest calls. The typical function for creating an Ajax object in javascript looks like the following:
+<pre name="code" class="js">
+var xmlHttp;
+function ajaxFunction() {
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp = new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser does not support AJAX!');
+				return false;
+			}
+		}
+	}
+}
+</pre>
+<p>
+It's actually more ugly than it needs to be. Most of the ugliness comes from the differences between Internet Explorer and the others. Up until version 7, Internet Explorer had implemented the XMLHttpRequest object as an ActiveX add-on, whereas the others implement it as a native object. As a result, since we can't be sure what browser our Javascript is going to be loaded, we need to implement code that will create both forms where necessary. Having created the Ajax object we can then make our request:
+</p>
+<pre name="code" class="js">
+//the function that will do all our processing when the ajax call returns
+function my_callback_function() {
+
+	//the function is called everytime its status changes,
+	//not just when the call returns, so we need to check the
+	//readyState property and then the status property
+	if (xmlHttp.readyState == 4 /* complete */)	{
+		if (xmlHttp.status == 200 || xmlHttp.status == 304) {
+			//get an element on the page that you want
+			//to update with the results of the ajax call
+			var srch = document.getElementById("search_results");
+
+			//extract the text from our xmlHttp object
+			var txt = xmlHttp.responseText;
+
+			//evaluate the text response as a javascript object
+			var o = eval("(" + txt + ")");
+
+			//build the html from the js object which in this example is
+			//an object with two properties: title and content
+			var html = "<h1>" + o.title + "</h1>" + o.content;
+
+			//update the element
+			srch.innerHTML = html;
+		} else {
+			// error occurred
+		}
+	}
+}
+
+//assign the function to be called when the request returns
+xmlHttp.onreadystatechange = my_callback_function;
+
+//configure how the call will be made.
+//In this case using the http method 'GET' and a dummy json file
+xmlHttp.open('GET', 'MyTest.json', true);
+
+//make the actual request
+xmlHttp.send();
+</pre>
