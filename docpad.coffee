@@ -135,7 +135,7 @@ docpadConfig = {
         getByCateogory: (category) ->
             @getCollection('posts').findAll({'category':category},[{date:-1}])
             
-
+            
 
 
     # =================================
@@ -156,8 +156,8 @@ docpadConfig = {
             @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
         popularPosts: ->
             @getCollection('documents').findAllLive({relativeOutDirPath: 'posts',popular:$exists:true},[{date:-1}])
-        comments: ->
-            @getCollection('documents').findAllLive({relativeOutDirPath: 'comments'},[{date:-1}])
+        #comments: ->
+            #@getCollection('documents').findAllLive({relativeOutDirPath: 'comments'},[{date:-1}])
         pdfs: ->
             @getCollection('files').findAllLive({relativeOutDirPath: 'pdfs'},[{date:-1}])
         
@@ -217,42 +217,6 @@ docpadConfig = {
             server.get '/category/', (req,res,next) ->
                     
                 next()
-            # Comment Handing
-            server.post '/comments', (req,res,next) ->
-                # Prepare
-                console.log("POST COMMENTS")
-                console.log(req.body.slug)
-                now = new Date()
-                nowTime = now.getTime()
-                console.log(nowTime)
-                nowString = now.toString()
-                redirect = req.body.redirect ? req.query.redirect ? 'back'
-                
-                outPath = path.join(latestConfig.documentsPaths[0],"comments")
-                outFile = path.join(outPath,nowTime.toString()+".html.md")
-               
-                # Prepare
-                documentAttributes =
-                    data: req.body.content or ''
-                    meta:
-                        postslug:req.body.slug
-                        author: req.body.author or ''
-                        date: nowString
-                        timeid: nowTime
-                        fullPath: outFile
-
-                # No need to call next here as res.send/redirect will do it for us
-
-                # Write source which will trigger the regeneration
-                meta = JSON.stringify(documentAttributes.meta, null, 0)
-                meta = meta.replace('{','').replace('}','').replace(/,/gi,',\r\n').replace(/:/gi,': ')
-                content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.data
-                console.log "writing file..."
-                safefs.writeFile outFile, content, (err2) ->
-                    return next(err2)  if err2
-                    
-                res.json(documentAttributes)
-
 }
 
 # Export our DocPad Configuration

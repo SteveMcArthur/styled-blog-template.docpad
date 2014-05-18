@@ -19,8 +19,7 @@
     <%if @truncate && @content:%>
         <a href="<%= @document.url %>" class="button">Read More</a>
     <%else:%>    
-        <%comments = @getComments(@document.slug)%>   
-        <%= @partial('comment.html.eco',{comments:comments,document:@document}) %>
+        <%- @getCommentsBlock() %>
     <%end%>
 </article>
 

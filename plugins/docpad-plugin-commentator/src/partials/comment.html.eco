@@ -1,3 +1,5 @@
+<%comments = [] # @getComments().toJSON()%>
+<%imgPath = "./"%>
 <div class="ui two column grid comments">
     <div class="column">
         <div class="ui piled blue segment">
@@ -5,16 +7,16 @@
         <i class="icon inverted circular teal comment"></i> Comments
       </h2>
             <div id="comments" class="ui comments">
-                <% if @comments.length == 0: %>
+                <% if comments.length is 0: %>
                 <div id="no-comments"> 
                     <p>No comments yet</p>
                 </div>  
                 <% else: %>
-                    <% for comment in @comments.toJSON():%>
+                    <% for comment in comments.toJSON():%>
                         <div class="comment">
                             <a class="avatar">
                                 <%if comment.avatar:%>
-                                    <img src="<%=@comment.avatar%>">
+                                    <img src="<%=comment.avatar%>">
                                 <%else:%>
                                     <img src="/img/avatar/default-avatar.png">
                                 <%end%>
@@ -85,7 +87,7 @@
                             $(this).siblings('.placeholder').hide();
                         });
                          $('textarea').blur(function(){
-                           if($(this).text().length == 0){
+                           if($(this).val().length == 0){
                               $('textarea').siblings('.placeholder').show();
                            }
                         });

@@ -1,5 +1,5 @@
 {
-    "name": "docpad-plugin-absolute-paths",
+    "name": "docpad-plugin-relativepaths",
     "version": "2.0.0",
     "description": "",
     "homepage": "",
@@ -7,14 +7,15 @@
         "docpad",
         "docpad-plugin",
         "paths",
-        "absolute paths"
+        "absolute paths",
+        "relative paths"
     ],
-    "author": "Copyright holders name <copyright holder's email> (copyright holder's website URL)",
+    "author": "Steve McArthur <contact@stevemcarthur.co.uk> (http://www.stevemcarthur.co.uk)",
     "maintainers": [
-        "Your name <your email> (your GitHub URL)"
+        "Steve McArthur <contact@stevemcarthur.co.uk> (your GitHub URL)"
     ],
     "contributors": [
-        "Your name <your email> (your GitHub URL)"
+        "Steve McArthur <contact@stevemcarthur.co.uk> (your GitHub URL)"
     ],
     "bugs": {
         "url": "https://github.com/yourgithubusername/docpad-plugin-yourpluginname/issues"
@@ -29,5 +30,5 @@
     "peerDependencies": {
         "docpad": "6"
     },
-    "main": "./src/absolute-paths.plugin.coffee"
+    "main": "./src/relativepaths.plugin.coffee"
 }

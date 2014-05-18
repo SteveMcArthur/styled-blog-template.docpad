@@ -1,9 +1,9 @@
 # Export Plugin
 module.exports = (BasePlugin) ->
     # Define Plugin
-    class absolutePathPlugin extends BasePlugin
+    class RelativePaths extends BasePlugin
         # Plugin Name
-        name: 'absolutepath'
+        name: 'relativepaths'
         config:
             url: "/"
         util = require('util')
