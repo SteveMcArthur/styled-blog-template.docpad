@@ -2,6 +2,7 @@
 # It is simply a CoffeeScript Object which is parsed by CSON
 docpadConfig = {
 
+    #port:5858
     # =================================
     # Template Data
     # These are variables that will be accessible via our templates
@@ -46,7 +47,6 @@ docpadConfig = {
                 '/css/button.css'
                 '/css/segment.css'
                 '/css/menu.css'
-                '/css/comment.css'
                 '/css/blog.css'
                 '/css/fonts.css'
                 '/css/color.css'
@@ -173,7 +173,7 @@ docpadConfig = {
     # The following overrides our production url in our development environment with false
     # This allows DocPad's to use it's own calculated site URL instead, due to the falsey value
     # This allows <%- @site.url %> in our template data to work correctly, regardless what environment we are in
-    env: 'production'
+    #env: 'production'
 
     environments:
         development:

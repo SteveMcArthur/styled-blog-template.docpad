@@ -33,11 +33,11 @@
   "dependencies": {
     "docpad": "~6.64.0",
     "docpad-plugin-cleanurls": "~2.7.0",
+    "docpad-plugin-commentator": "~2.0.7",
     "docpad-plugin-eco": "~2.0.3",
     "docpad-plugin-marked": "~2.2.0",
-    "docpad-plugin-nativecomments": "~2.1.1",
     "docpad-plugin-partials": "~2.9.0",
-    "safefs": "^3.1.1"
+    "safefs": "~3.1.1"
   },
   "devDependencies": {
     "docpad-plugin-livereload": "~2.6.0"

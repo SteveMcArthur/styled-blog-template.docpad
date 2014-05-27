@@ -1,0 +1,1 @@
+cmd /k docpad deploy-ghpages --env static
