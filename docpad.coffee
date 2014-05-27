@@ -173,7 +173,7 @@ docpadConfig = {
     # The following overrides our production url in our development environment with false
     # This allows DocPad's to use it's own calculated site URL instead, due to the falsey value
     # This allows <%- @site.url %> in our template data to work correctly, regardless what environment we are in
-    #env: 'production'
+    env: 'production'
 
     environments:
         development:
@@ -199,6 +199,7 @@ docpadConfig = {
             database = docpad.getDatabase()
             path = require('path')
             safefs = require('safefs')
+            util = require('util')
 
             # As we are now running in an event,
             # ensure we are using the latest copy of the docpad configuraiton
@@ -214,9 +215,47 @@ docpadConfig = {
                 else
                     next()
                     
-            server.get '/category/', (req,res,next) ->
-                    
-                next()
+            server.get /\/admin\/[a-zA-z0-9\-]+(\/)?(\.html)?$/, (req,res,next) ->
+                console.log(req.url)
+                items = req.url.split("\/")
+                slug = items[items.length-1].toLowerCase().replace(".html","")
+                console.log(slug)
+                document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')})
+                #document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')}).toJSON()
+                #require('fs').writeFileSync('document.json',require('util').inspect(documents))
+                document.attributes.postSlug = slug
+                docpad.serveDocument({
+                    document: document,
+                    req: req,
+                    res: res,
+                    next: next,
+                    statusCode: 200
+                })
+            #don't call next as the request stops here because we are serving the document
+            
+            server.post /\/admin\/save\/[a-zA-z0-9\-]+/, (req,res,next) ->
+                console.log(req.body)
+                
+                if (req.body.content && req.body.id)
+                    document = docpad.getCollection('documents').findOne({slug:req.body.id}).toJSON()
+                    outFile = document.fullPath
+                    documentAttributes =
+                        content: req.body.content or document.content
+                        meta: document.meta
+              
+                        
+                    # Write source which will trigger the regeneration
+                    # but we don't have to wait for the page to be regenerated
+                    # as the page will be updated by ajax
+                    meta = ""
+                    for key, val of documentAttributes.meta
+                        meta+= key+": "+val+"\r\n"
+                    content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.content
+                    safefs.writeFile outFile, content
+                    return res.json({success:true})
+                else
+                    return res.json({success:false})
+
 }
 
 # Export our DocPad Configuration

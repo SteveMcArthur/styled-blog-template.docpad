@@ -1,0 +1,36 @@
+---
+layout: base
+---
+
+            <!-- Main Page Content and Sidebar -->
+            <div class="row">
+                <!-- Main Blog Content -->
+                <div class="large-9 columns" role="content">
+                    <%- @content %>
+                </div>
+                <!-- End Main Content -->
+
+                <!-- Sidebar -->
+                <aside class="large-3 columns">
+
+                    <h5>Actions</h5>
+                    <div id="categories" class="ui secondary vertical pointing menu">
+                            <a href="#" class="item">Do Something</a>
+                            <a href="#" class="item">Do Something</a>
+                            <a href="#" class="item">Do Something</a>
+                    </div>
+
+
+                        <div class="ui vertical menu">
+                            <div class="header item">
+                                <i class="icon-page"></i>
+                                Posts
+                            </div>
+                            <% for post in @getCollection('posts').toJSON():%>
+                                <div class="item">
+                                    <a href="/admin/<%=post.slug%>"><h6><%-post.title%></h6><%-post.date.toDateString()%></a>
+                                </div>
+                            <%end%>
+                        </div>
+                </aside>
+                <!-- End Sidebar -->

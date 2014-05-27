@@ -1,8 +1,8 @@
-<article data-category="<%=@document.category%>">
+<article data-id="<%-@document.slug%>" data-category="<%=@document.category%>">
     <h1><a href="<%= @document.url %>"><%- @document.title %></a></h1>
     <p class="article_pub-date">Published
-        <time datetime="<%= @document.date %>" pubdate=""><%- @document.date.toDateString() %></time>
-        <span id="doc-slug" class="float-right hidden"><%- @document.slug %></span>
+        <time datetime="<%= @document.date %>" pubdate=""><%-@document.date.toDateString()%></time>
+        <span id="doc-slug" class="float-right hidden"><%-@document.slug%></span>
     </p>
     
     <%@content = @document.contentRenderedWithoutLayouts%>
@@ -12,14 +12,16 @@
     <%end%>
         
     <div class="row">
-        <div class="large-12 columns">
+        <div contenteditable="<%-@editMode%>" class="large-12 columns post">
            <%- @content %>
         </div>
     </div>
-    <%if @truncate && @content:%>
-        <a href="<%= @document.url %>" class="button">Read More</a>
-    <%else:%>
-        <%- @getCommentsBlock() %>
+    <%if !@editMode:%>
+        <%if @truncate && @content:%>
+            <a href="<%= @document.url %>" class="button">Read More</a>
+        <%else:%>
+            <%- @getCommentsBlock() %>
+        <%end%>
     <%end%>
 </article>
 

@@ -1,0 +1,11 @@
+---
+layout: admin
+title: Edit Post
+dynamic: true
+scripts: ['/js/ckeditor/ckeditor.js','/js/downshow.js']
+---
+<%items = @req.url.split("\/")%>
+<%slug = items[items.length-1].toLowerCase().replace(".html","")%>
+<%document = @getCollection('documents').findOne({slug: slug}).toJSON()%>
+
+<%- @partial('post.html.eco',{document:document,editMode:true}) %>
