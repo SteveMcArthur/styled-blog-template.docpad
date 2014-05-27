@@ -12,7 +12,11 @@
     <%end%>
         
     <div class="row">
+        <%if @editMode:%>
         <div contenteditable="<%-@editMode%>" class="large-12 columns post">
+        <%else:%>
+        <div class="large-12 columns post">
+        <%end%>
            <%- @content %>
         </div>
     </div>
