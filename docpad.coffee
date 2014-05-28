@@ -161,7 +161,9 @@ docpadConfig = {
         pdfs: ->
             @getCollection('files').findAllLive({relativeOutDirPath: 'pdfs'},[{date:-1}])
         
-        
+    # Regenerate Every
+    # Performs a regenerate every x milliseconds, useful for always having the latest data
+    regenerateEvery: false  # default = false
 
 
     # =================================
