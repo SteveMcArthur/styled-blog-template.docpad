@@ -1,5 +1,7 @@
+<%if @editMode then editAttribute = 'contenteditable="true"' else editAttribute = ''%>
+
 <article data-id="<%-@document.slug%>" data-category="<%=@document.category%>">
-    <h1><a href="<%= @document.url %>"><%- @document.title %></a></h1>
+    <h1 <%-editAttribute%>><a href="<%= @document.url %>"><%- @document.title %></a></h1>
     <p class="article_pub-date">Published
         <time datetime="<%= @document.date %>" pubdate=""><%-@document.date.toDateString()%></time>
         <span id="doc-slug" class="float-right hidden"><%-@document.slug%></span>
@@ -12,11 +14,7 @@
     <%end%>
         
     <div class="row">
-        <%if @editMode:%>
-        <div contenteditable="<%-@editMode%>" class="large-12 columns post">
-        <%else:%>
-        <div class="large-12 columns post">
-        <%end%>
+        <div <%-editAttribute%> class="large-12 columns post">
            <%- @content %>
         </div>
     </div>
@@ -28,4 +26,5 @@
         <%end%>
     <%end%>
 </article>
+
 

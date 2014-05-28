@@ -14,7 +14,7 @@ docpadConfig = {
         site:
             # The production url of our website
             # If not set, will default to the calculated site URL (e.g. http://localhost:9778)
-            url: "http://docpad.org"
+            url: "http://localhost:9778"
 
             # Here are some old site urls that you would like to redirect from
             oldUrls: [
@@ -216,10 +216,9 @@ docpadConfig = {
                     next()
                     
             server.get /\/admin\/[a-zA-z0-9\-]+(\/)?(\.html)?$/, (req,res,next) ->
-                console.log(req.url)
+                
                 items = req.url.split("\/")
                 slug = items[items.length-1].toLowerCase().replace(".html","")
-                console.log(slug)
                 document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')})
                 #document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')}).toJSON()
                 #require('fs').writeFileSync('document.json',require('util').inspect(documents))
@@ -234,14 +233,15 @@ docpadConfig = {
             #don't call next as the request stops here because we are serving the document
             
             server.post /\/admin\/save\/[a-zA-z0-9\-]+/, (req,res,next) ->
-                console.log(req.body)
                 
                 if (req.body.content && req.body.id)
-                    document = docpad.getCollection('documents').findOne({slug:req.body.id}).toJSON()
+                    slug = req.body.id
+                    document = docpad.getCollection('documents').findOne({slug:slug}).toJSON()
                     outFile = document.fullPath
                     documentAttributes =
                         content: req.body.content or document.content
                         meta: document.meta
+                    documentAttributes.meta.title = req.body.title
               
                         
                     # Write source which will trigger the regeneration
@@ -251,8 +251,16 @@ docpadConfig = {
                     for key, val of documentAttributes.meta
                         meta+= key+": "+val+"\r\n"
                     content = '---\r\n'+meta+'\r\n---\r\n'+documentAttributes.content
-                    safefs.writeFile outFile, content
-                    return res.json({success:true})
+                    file = docpad.getCollection('documents').findOne({slug:slug})
+                    safefs.writeFile outFile, content, (err) ->
+                        # Check
+                        return next(err, document)  if err
+                        # Log
+                        docpad.log('info', "Updated file #{outFile} from request")
+                        # Generate
+                        file.action 'load', (err) ->
+                            docpad.action 'generate'
+                    return res.json({title:documentAttributes.meta.title})
                 else
                     return res.json({success:false})
 
