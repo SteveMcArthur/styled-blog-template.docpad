@@ -4,7 +4,9 @@ docpadConfig = {
 
     #port:5858
     
-    maxAge: false
+    #maxAge: false
+    
+    regenerateDelay: 1000
     
     # =================================
     # Template Data
@@ -166,7 +168,7 @@ docpadConfig = {
         
     # Regenerate Every
     # Performs a regenerate every x milliseconds, useful for always having the latest data
-    regenerateEvery: false  # default = false
+    #regenerateEvery: false  # default = false
 
 
     # =================================
@@ -178,7 +180,7 @@ docpadConfig = {
     # The following overrides our production url in our development environment with false
     # This allows DocPad's to use it's own calculated site URL instead, due to the falsey value
     # This allows <%- @site.url %> in our template data to work correctly, regardless what environment we are in
-    env: 'production'
+    #env: 'production'
 
     environments:
         development:
