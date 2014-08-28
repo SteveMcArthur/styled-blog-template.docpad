@@ -3,6 +3,9 @@
 docpadConfig = {
 
     #port:5858
+    
+    maxAge: false
+    
     # =================================
     # Template Data
     # These are variables that will be accessible via our templates
@@ -239,7 +242,9 @@ docpadConfig = {
                 if (req.body.content && req.body.id)
                     slug = req.body.id
                     document = docpad.getCollection('documents').findOne({slug:slug}).toJSON()
-                    outFile = document.fullPath
+                    
+                    safefs.writeFile 'output.json', util.inspect(document)
+                    outFile = path.join(document.fullDirPath,document.basename+'.html.md')
                     documentAttributes =
                         content: req.body.content or document.content
                         meta: document.meta
@@ -260,8 +265,9 @@ docpadConfig = {
                         # Log
                         docpad.log('info', "Updated file #{outFile} from request")
                         # Generate
-                        file.action 'load', (err) ->
-                            docpad.action 'generate'
+                        #file.action 'load', (err) ->
+                            #docpad.action 'generate'
+                            #docpad.action 'generate'
                     return res.json({title:documentAttributes.meta.title})
                 else
                     return res.json({success:false})
