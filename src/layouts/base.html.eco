@@ -34,90 +34,98 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="fixed">
+    <header id="header">
+        <div class="row">
+            <div class="large-12 columns left">
+                <div id="logo-image">
+                    <a href="<%= @site.url %>"><%- @site.title %></a>
+                </div>
+
+            </div>
+
+        </div>
+    </header>
+
+    <div class="">
         <!-- Header and Nav -->
-        <nav class="top-bar" data-topbar>
-            <ul class="title-area">
-                <!-- Title Area -->
-                <li class="name">
-                    <h1>
-                        <a href="<%= @site.url %>"><%- @site.title %></a>
-                    </h1>
-                </li>
-                <li class="toggle-topbar menu-icon">
-                    <a href="#">
-                        <span>Menu</span>
-                    </a>
-                </li>
-            </ul>
-
-            <section class="top-bar-section">
-                <!-- Left Nav Section -->
-                <ul class="left">
-                    <li class=" menu-icon" id="home-icon">
-                        <a href="/">
-                            <i class="icon-home"></i>
-                            <span class="name">Home</span>
-                        </a>
-                    </li>
-                    <li class=" menu-icon" id="blog-icon">
-                        <a href="/blog/">
-                            <i class="icon-blog"></i>
-                            <span class="name">Blog</span>
-                        </a>
-
-                    </li>
-                    <li class=" menu-icon" id="contact-icon">
-                        <a href="/#contact">
-                            <i class="icon-contact"></i>
-                            <span class="name">Contact</span>
+        <nav class="top-bar">
+            <div class="row">
+                <ul class="title-area">
+                    <!-- Title Area -->
+                    <li class="toggle-topbar menu-icon">
+                        <a href="#">
+                            <span>Menu</span>
                         </a>
                     </li>
                 </ul>
 
-                <ul class="title-area" id="menu-titles">
-                    <!-- Title Area -->
-                    <li class="name hidden" id="home-text">
-                        <h1>
-                            <a href="./">Home
+                <section class="top-bar-section">
+                    <!-- Left Nav Section -->
+                    <ul class="left">
+                        <li class=" menu-icon active" id="home-icon">
+                            <a href="/">
+                                <span class="name">Home</span>
+                            </a>
+                        </li>
+                        <li class=" menu-icon" id="blog-icon">
+                            <a href="/blog/">
+                                <span class="name">Blog</span>
+                            </a>
+
+                        </li>
+                        <li class=" menu-icon" id="contact-icon">
+                            <a href="/#contact">
+                                <span class="name">Contact</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="title-area" id="menu-titles">
+                        <!-- Title Area -->
+                        <li class="name hidden" id="home-text">
+                            <h1>
+                            <a href="/">Home
                             </a>
                         </h1>
-                    </li>
-                    <li class="name hidden" id="blog-text">
-                        <h1>
+                        </li>
+                        <li class="name hidden" id="blog-text">
+                            <h1>
                             <a href="/blog/">Blog
                             </a>
                         </h1>
-                    </li>
-                    <li class="name hidden" id="contact-text">
-                        <h1>
+                        </li>
+                        <li class="name hidden" id="contact-text">
+                            <h1>
                             <a href="/#contact">Contact
                             </a>
                         </h1>
-                    </li>
+                        </li>
 
-                </ul>
+                    </ul>
 
-                <ul class="right">
-                    <li class=" menu-icon">
-                        <a href="#">
-                            <i class="icon-facebook"></i>
-                        </a>
-                    </li>
-                    <li class=" menu-icon">
-                        <a href="#">
-                            <i class="icon-twitter"></i>
-                        </a>
+                    <ul class="right">
+                        <li class=" menu-icon">
+                            <a href="#">
+                                <i class="icon-facebook"></i>
+                            </a>
+                        </li>
+                        <li class=" menu-icon">
+                            <a href="#">
+                                <i class="icon-twitter"></i>
+                            </a>
 
-                    </li>
-                    <li class=" menu-icon">
-                        <a href="atom.xml">
-                            <i class="icon-feed"></i>
-                        </a>
-                    </li>
-                </ul>
+                        </li>
+                        <li class=" menu-icon">
+                            <a href="atom.xml">
+                                <i class="icon-feed"></i>
+                            </a>
+                        </li>
 
-            </section>
+                    </ul>
+
+
+                </section>
+            </div>
         </nav>
     </div>
     <div class="content-wrapper">
@@ -182,7 +190,7 @@
                return false;
            }
            $('[data-category]').each(function () {
-               items.push($(this).attr('data-category'));
+               items.push($(this).attr('data-category').trim());
            });
            $('#categories .item').each(function () {
                if (containsTxt($(this).text())) {

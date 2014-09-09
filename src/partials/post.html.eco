@@ -1,7 +1,7 @@
 <%if @editMode then editAttribute = 'contenteditable="true"' else editAttribute = ''%>
 
 <article data-id="<%-@document.slug%>" data-category="<%=@document.category%>">
-    <h1 <%-editAttribute%>><a href="<%= @document.url %>"><%- @document.title %></a></h1>
+    <h2 <%-editAttribute%>><a href="<%= @document.url %>"><%- @document.title %></a></h2>
     <p class="article_pub-date">Published
         <time datetime="<%= @document.date %>" pubdate=""><%-@document.date.toDateString()%></time>
         <span id="doc-slug" class="float-right hidden"><%-@document.slug%></span>
@@ -15,11 +15,9 @@
         <%@content = @truncate(@content,@trimTo || 700)%>
     <%end%>
         
-    <div class="row">
         <div <%-editAttribute%> class="large-12 columns post">
            <%- @content %>
         </div>
-    </div>
     <%if !@editMode:%>
         <%if @truncate && @content:%>
             <a href="<%= @document.url %>" class="button">Read More</a>

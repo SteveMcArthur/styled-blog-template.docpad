@@ -1,40 +1,131 @@
+@backClr:  #f1f2f6;
+@foreClr: #666;
+@sideClr: #fff;
+/*Aqua
+@themeClr: #18adb5;
+@themeClr2: #4abfc5;
+*/
+/*Grapefruit
+@themeClr: #DA4453;
+@themeClr2: #ED5565;
+@iconClr: #F5BAC0;
+*/
+/*Pink Rose
+@themeClr: #D770AD;
+@themeClr2: #EC87C0;
+@iconClr: #f6b4d9;
+*/
+
+/*Sunflower
+@themeClr: #F6BB42;
+@themeClr2: #FFCE54;
+@iconClr: #f8e1a8;
+*/
+
+/*Bittersweet
+@themeClr: #E9573F;
+@themeClr2: #FC6E51;
+@iconClr: #fca795;
+*/
+
+/*Dark Gray
+@themeClr: #434a54;
+@themeClr2: #656d78;
+@iconClr: #a9b4c4;
+*/
+
+/*Lavender
+@themeClr: #967adc;
+@themeClr2: #ac92ec;
+@iconClr: #d9cef3;
+*/
+
+/*Blude Jeans*/
+@themeClr: #4a89dc;
+@themeClr2: #5d9cec;
+@iconClr: #accdf7;
+
+/*Pepermint
+@themeClr: #00B5ad;
+@themeClr2: #2cc6bf;
+@iconClr: #94DFDB;
+*/
+
+@titleClr:  #222222;
+@dateTitleClr: #949494;
+@themeClr4: #202020;
+@catClr: #b7b7b7;
+
 html,
 body {
-    color: #555;
+    color: @foreClr;
 }
+
 .content-wrapper {
-    background: #f1f2f6;
+    background: @backClr;
 }
+
+#header {
+background-color: @themeClr;
+}
+#header .left {
+background-color: @themeClr;
+}
+
+.top-bar {
+background: rgba(23, 23, 23, 0.8);
+
+}
+
+.top-bar-section ul li.active, .top-bar-section ul li:hover {
+background-color: @themeClr;
+}
+
 h1 a,
 h1 a:hover {
-    color: #222222;
+    color: @titleClr;
 }
+
 .article_pub-date {
-    color: #949494;
+    color:@dateTitleClr;
 }
+
 .ui.vertical.menu > .item.active {
-    border-right-color: #00B9F0;
-    color: #00B9F0;
+    border-right-color: @themeClr;
+    color: @themeClr;
 }
+
 button,
 .button {
-    background-color: rgb(0, 181, 173);
+    background-color: @themeClr;
 }
+
 button:hover,
 .button:hover {
-    background: rgba(0, 181, 173, 0.7);
+    background: @themeClr2;
 }
-.top-bar,
-.top-bar.expanded {
-    background: rgba(0, 181, 173, 0.8);
-}
+
+
 li.menu-icon i {
-    color: rgb(148, 223, 219);
+    color: @iconClr;
 }
+
+aside .panel {
+    background-color: @sideClr;
+}
+
+.panel h6 {
+    color: @foreClr;
+}
+
 .ui.secondary.vertical.menu .active.item {
-    border-color: rgb(0, 181, 173)!important;
-    color: rgb(0, 181, 173)!important;
+    border-color: @themeClr !important;
+    color: @themeClr !important;
 }
+
 .ui.blue.segment {
-    border-top: 0.2em solid rgb(0, 181, 173);
+    border-top: 0.2em solid;
+    border-color: @themeClr;
 }
+
+

@@ -1,51 +1,47 @@
 ---
 layout: base
 ---
-            <!-- Main Page Content and Sidebar -->
-            <div class="row">
-                <!-- Main Blog Content -->
-                <div class="large-9 columns" role="content">
-                    <%- @content %>
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+    <!-- Main Blog Content -->
+    <div class="large-9 columns" role="content">
+        <%- @content %>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+
+        <h5 class="title">Categories</h5>
+        <div id="categories" class="ui secondary vertical pointing menu">
+            <% cats=@getCategories() %>
+                <% for item in cats: %>
+                    <a href="#" class="item"><%-item%></a>
+                    <%end%>
+        </div>
+
+
+        <div class="panel">
+            <h5 class="title">Recent Posts</h5>
+
+            <% for post in @getRecentPosts():%>
+                <div class="item">
+                    <% content=post.content.replace(/<img[^>]+\>/ig,"")%>
+                        <a href="<%=post.url%>"><h6><%-post.title%></h6> <p><%-@truncateText(content,100)%></p></a>
                 </div>
-                <!-- End Main Content -->
-
-                <!-- Sidebar -->
-                <aside class="large-3 columns">
-
-                    <h5>Categories</h5>
-                    <div id="categories" class="ui secondary vertical pointing menu">
-                        <% cats=@getCategories() %>
-                        <% for item in cats: %>
-                            <a href="#" class="item"><%-item%></a>
-                        <%end%>
-
-                    </div>
+            <%end%>
+        </div>
 
 
-                        <div class="ui vertical menu">
-                            <div class="header item">
-                                <i class="icon-page"></i>
-                                Recent Posts
-                            </div>
-                            <% for post in @getRecentPosts():%>
-                                <div class="item">
-                                    <% content = post.content.replace(/<img[^>]+\>/ig,"")%>
-                                    <a href="<%=post.url%>"><h6><%-post.title%></h6> <p><%-@truncateText(content,100)%></p></a>
-                                </div>
-                            <%end%>
-                        </div>
+        <div class="panel">
+            <h5 class="title">Popular Posts</h5>
 
-                        <div class="ui vertical menu">
-                            <div class="header item">
-                                <i class="icon-page"></i>
-                                Popular Posts
-                            </div>
-                            <% for post in @getCollection('popularPosts').toJSON():%>
-                                <div class="item">
-                                    <% content = post.content.replace(/<img[^>]+\>/ig,"")%>
-                                    <a href="<%=post.url%>"><h6><%-post.title%></h6><p><%-@truncateText(content,100)%></p></a>
-                                </div>
-                            <%end%>
-                        </div>
-                </aside>
-                <!-- End Sidebar -->
+            <% for post in @getCollection( 'popularPosts').toJSON():%>
+                <div class="item">
+                    <% content=post.content.replace(/<img[^>]+\>/ig,"")%>
+                        <a href="<%=post.url%>"><h6><%-post.title%></h6><p><%-@truncateText(content,100)%></p></a>
+                </div>
+            <%end%>
+        </div>
+    </aside>
+    <!-- End Sidebar -->
