@@ -35,6 +35,7 @@
     "docpad-plugin-cleanurls": "~2.7.0",
     "docpad-plugin-commentator": "~2.0.7",
     "docpad-plugin-eco": "~2.0.3",
+    "docpad-plugin-less": "^2.4.1",
     "docpad-plugin-marked": "~2.2.1",
     "docpad-plugin-partials": "~2.9.1",
     "safefs": "~3.1.1"

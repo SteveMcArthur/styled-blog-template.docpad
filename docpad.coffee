@@ -6,7 +6,7 @@ docpadConfig = {
     
     #maxAge: false
     
-    regenerateDelay: 1000
+    #regenerateDelay: 1000
     
     # =================================
     # Template Data
@@ -55,6 +55,11 @@ docpadConfig = {
                 '/css/blog.css'
                 '/css/fonts.css'
                 '/css/color.css'
+            ]
+            
+            liveStyles:[
+                '/css/foundation.css'
+                '/css/styles.css'
             ]
 
             # The website's scripts
@@ -221,12 +226,17 @@ docpadConfig = {
                     res.redirect(newUrl+req.url, 301)
                 else
                     next()
-                    
+            
+        
             server.get /\/admin\/[a-zA-z0-9\-]+(\/)?(\.html)?$/, (req,res,next) ->
                 
+                console.log req.url
                 items = req.url.split("\/")
                 slug = items[items.length-1].toLowerCase().replace(".html","")
-                document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')})
+                console.log slug
+                document = docpad.getCollection('documents').findOne({title: 'Edit Post'})
+                ##safefs.writeFile 'admin.json', util.inspect(document)
+                console.log document.attributes.title
                 #document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')}).toJSON()
                 #require('fs').writeFileSync('document.json',require('util').inspect(documents))
                 document.attributes.postSlug = slug
@@ -237,6 +247,8 @@ docpadConfig = {
                     next: next,
                     statusCode: 200
                 })
+                console.log "Document served"
+                #next()
             #don't call next as the request stops here because we are serving the document
             
             server.post /\/admin\/save\/[a-zA-z0-9\-]+/, (req,res,next) ->
