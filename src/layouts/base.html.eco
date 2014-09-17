@@ -46,7 +46,7 @@
         </div>
     </header>
 
-    <div class="">
+    <div id="nav" class="">
         <!-- Header and Nav -->
         <nav class="top-bar">
             <div class="row">
@@ -197,6 +197,26 @@
                    $(this).addClass('active');
                }
            });
+		   
+		    var nav = $("#nav");
+		    var headerHeight = $("#header").height()+ nav.height();
+		    console.log(headerHeight);
+		    var win = $(window);
+		    $(document).on( 'scroll', function(){
+        
+        		if(win.scrollTop()>= (headerHeight)){
+             		if (!nav.hasClass('fixed')){
+						nav.hide();
+						nav.addClass("fixed");
+						nav.fadeIn(300);
+					}
+				}
+
+        		if(win.scrollTop()<headerHeight){
+             		
+					nav.removeClass("fixed");
+        		}
+			});
 
        });
     </script>
