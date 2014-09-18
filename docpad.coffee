@@ -65,7 +65,7 @@ docpadConfig = {
             # The website's scripts
             scripts: [
                 '/js/jquery.js'
-                '/js/foundation.min.js'
+                '/js/foundation/foundation.js'
                 """
                 <script>$(document).foundation();</script>
                 """
