@@ -188,10 +188,26 @@ docpadConfig = {
     #env: 'production'
 
     environments:
-        development:
-            templateData:
-                site:
-                    url: false
+        development:  # default
+            # Always refresh from server
+            maxAge: false  # default
+
+            # Check for environment variables that the app will listen on the various cloud environments (this case, openshift)
+            port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 9778
+        production:
+            maxAge: false
+            # maxAge: false
+            
+            hostname: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
+            port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 9778
+        static:
+            maxAge: 86400000
+            # maxAge: false
+            
+            hostname: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+            # Listen to port 8082 on the development environment
+            port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 9778
 
 
     # =================================
