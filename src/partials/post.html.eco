@@ -6,15 +6,14 @@
         <time datetime="<%= @document.date %>" pubdate=""><%-@document.date.toDateString()%></time>
         <span id="doc-slug" class="float-right hidden"><%-@document.slug%></span>
     </p>
-    
+
     <% if !@content:%>
         <%@content = @document.contentRenderedWithoutLayouts%>
     <%end%>
-    <%# pass a 'truncate' helper function to shorten post length for display on home page%>
     <%if @truncate && @content:%>
         <%@content = @truncate(@content,@trimTo || 700)%>
     <%end%>
-        
+
         <div <%-editAttribute%> class="large-12 columns post">
            <%- @content %>
         </div>

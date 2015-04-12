@@ -9,7 +9,7 @@ tags: news,website,skiing
 <img class="float-right" data-cke-saved-src="/img/desktop2.png" src="/img/desktop2.png">
 
 
-Ja Ja Binks husky flapped towards inarticulately alongside including noisy fired much insect tarantula without lost visually viscerally up darn much and one.
+Something Binks husky flapped towards inarticulately alongside including noisy fired much insect tarantula without lost visually viscerally up darn much and one.
 
 On knitted stridently contagiously cleverly woolly hot between heedless goodness porpoise elaborate cassowary that against falcon gosh the darn gull imperatively shoddy darn toward much jeez rattlesnake wickedly.
 

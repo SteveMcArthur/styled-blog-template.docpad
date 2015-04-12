@@ -1,13 +1,15 @@
 # The DocPad Configuration File
 # It is simply a CoffeeScript Object which is parsed by CSON
+fs = require('fs')
+util = require('util')
 docpadConfig = {
 
     #port:5858
-    
+
     #maxAge: false
-    
+
     #regenerateDelay: 1000
-    
+
     # =================================
     # Template Data
     # These are variables that will be accessible via our templates
@@ -56,7 +58,7 @@ docpadConfig = {
                 '/css/fonts.css'
                 '/css/color.css'
             ]
-            
+
             liveStyles:[
                 '/css/foundation.css'
                 '/css/styles.css'
@@ -95,7 +97,7 @@ docpadConfig = {
         getPreparedKeywords: ->
             # Merge the document keywords with the site keywords
             @site.keywords.concat(@document.keywords or []).join(', ')
-            
+
         # Get a list of all categories from all posts
         getCategories: ->
             cat = []
@@ -105,7 +107,7 @@ docpadConfig = {
                 if !(docat in cat)
                     cat.push(docat)
             return cat
-        
+
          # Get a list of all categories from all posts
         getTags: ->
             cat = []
@@ -115,10 +117,23 @@ docpadConfig = {
                 if !(docat in cat)
                     cat.push(docat)
             return cat
-        
+
+         #for debugging purposes
+        writeObject: (obj,name) ->
+            fs.writeFile(name+".json",util.inspect(obj))
+
+        getSlugFromURL : (url) ->
+            items = url.split("\/")
+            items[items.length-1].toLowerCase().replace(".html","")
+
+        getSlugFromUrl : @getSlugFromURL
+
+        getDocumentFromSlug : (slug) ->
+            document = @getCollection('documents').findOne({slug: slug})
+
         # Get the current year
         thisYear: (new Date()).getFullYear()
-        
+
         # Used for shortening a post
         truncateText: (content,trimTo) ->
             trimTo = trimTo || 200
@@ -134,18 +149,18 @@ docpadConfig = {
             #in the middle of a word
             i = output.lastIndexOf(' ',output.length-1)
             output.substr(0,i)+"..."
-            
+
         getRecentPosts: ->
             posts = @getCollection('documents').findAllLive({relativeOutDirPath: 'posts'},[{date:-1}])
             return [posts.at(2).toJSON(),posts.at(3).toJSON()]
-        
+
         getComments: (slug) ->
             @getCollection('comments').findAll({'postslug': slug},[{date:-1}])
-            
+
         getByCateogory: (category) ->
             @getCollection('posts').findAll({'category':category},[{date:-1}])
-            
-            
+
+
 
 
     # =================================
@@ -170,7 +185,7 @@ docpadConfig = {
             #@getCollection('documents').findAllLive({relativeOutDirPath: 'comments'},[{date:-1}])
         pdfs: ->
             @getCollection('files').findAllLive({relativeOutDirPath: 'pdfs'},[{date:-1}])
-        
+
     # Regenerate Every
     # Performs a regenerate every x milliseconds, useful for always having the latest data
     #regenerateEvery: false  # default = false
@@ -185,7 +200,7 @@ docpadConfig = {
     # The following overrides our production url in our development environment with false
     # This allows DocPad's to use it's own calculated site URL instead, due to the falsey value
     # This allows <%- @site.url %> in our template data to work correctly, regardless what environment we are in
-    #env: 'production'
+    env: 'production'
 
     environments:
         development:  # default
@@ -197,14 +212,14 @@ docpadConfig = {
         production:
             maxAge: false
             # maxAge: false
-            
+
             hostname: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
             port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 9778
         static:
             maxAge: 86400000
             # maxAge: false
-            
+
             hostname: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
             # Listen to port 8082 on the development environment
             port: process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || process.env.OPENSHIFT_INTERNAL_PORT || 9778
@@ -242,19 +257,13 @@ docpadConfig = {
                     res.redirect(newUrl+req.url, 301)
                 else
                     next()
-            
-        
+
+
             server.get /\/admin\/[a-zA-z0-9\-]+(\/)?(\.html)?$/, (req,res,next) ->
-                
-                console.log req.url
-                items = req.url.split("\/")
-                slug = items[items.length-1].toLowerCase().replace(".html","")
-                console.log slug
-                document = docpad.getCollection('documents').findOne({title: 'Edit Post'})
-                ##safefs.writeFile 'admin.json', util.inspect(document)
-                console.log document.attributes.title
-                #document = docpad.getCollection('documents').findOne({relativeOutPath: path.join('admin','post','index.html')}).toJSON()
-                #require('fs').writeFileSync('document.json',require('util').inspect(documents))
+
+                slug = latestConfig.templateData.getSlugFromURL(req.url)
+                document = docpad.getCollection('documents').findOne({relativeDirPath: 'admin'})
+
                 document.attributes.postSlug = slug
                 docpad.serveDocument({
                     document: document,
@@ -266,21 +275,21 @@ docpadConfig = {
                 console.log "Document served"
                 #next()
             #don't call next as the request stops here because we are serving the document
-            
+
             server.post /\/admin\/save\/[a-zA-z0-9\-]+/, (req,res,next) ->
-                
+
                 if (req.body.content && req.body.id)
                     slug = req.body.id
                     document = docpad.getCollection('documents').findOne({slug:slug}).toJSON()
-                    
+
                     safefs.writeFile 'output.json', util.inspect(document)
                     outFile = path.join(document.fullDirPath,document.basename+'.html.md')
                     documentAttributes =
                         content: req.body.content or document.content
                         meta: document.meta
                     documentAttributes.meta.title = req.body.title
-              
-                        
+
+
                     # Write source which will trigger the regeneration
                     # but we don't have to wait for the page to be regenerated
                     # as the page will be updated by ajax

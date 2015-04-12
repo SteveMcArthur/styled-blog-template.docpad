@@ -1,6 +1,17 @@
 ---
 title: Site Admin
 layout: admin
+dynamic: true
+scripts: ['/js/ckeditor/ckeditor.js','/js/downshow.js']
 ---
 
-Hello
+<% slug = @getSlugFromURL(@req.url)%>
+<% document = @getDocumentFromSlug(slug)%>
+<%@writeObject(document,slug)%>
+
+<%if document:%>
+<%- @partial('post.html.eco',{document:document.toJSON(),editMode:true}) %>
+<%else: %>
+<h3>No document found</h3>
+<%end%>
+
